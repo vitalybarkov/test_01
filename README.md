@@ -46,6 +46,7 @@ CREATE INDEX idx_clicks_banner_id ON clicks(banner_id);
 CREATE INDEX idx_clicks_timestamp ON clicks(timestamp);
 
 -- Sample data
+
 INSERT INTO banners (id, name) VALUES 
 (1, 'tom'),
 (2, 'bom'),
