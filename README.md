@@ -13,7 +13,7 @@
 - Simple database query with time filtering
 - Uses indexes for fast search
 
-### Optimizations for Middle+ Level
+### Optimizations
 - Query batching reduces database load
 - Prepared statements speed up inserts
 - Configured database connection pool
