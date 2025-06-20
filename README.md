@@ -52,7 +52,7 @@ INSERT INTO banners (id, name) VALUES
 (4, 'rom');
 
 
-// TEST:
+## TEST:
 curl http://localhost:8080/counter/1
 
 curl -X POST http://localhost:8090/stats/3   -H "Content-Type: application/json"   -d '{"ts_from": "2023-01-01T00:00:00Z", "ts_to": "2025-12-31T23:59:59Z"}'
