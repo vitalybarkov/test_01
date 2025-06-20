@@ -1,27 +1,30 @@
-// HOW IT WORKS:
-обработка кликов (/counter):
--- использую канал для асинхронной обработки кликов
--- клики накапливаются в батчи и записываются в БД раз в секунду или при достижении 100 кликов
--- использую ON CONFLICT для инкремента счетчика при существующей записи за ту же минуту
-получение статистики (/stats):
--- простой запрос к БД с фильтрацией по времени
--- использую индексы для быстрого поиска
-оптимизации для Middle+ уровня:
--- батчинг запросов уменьшает нагрузку на БД
--- подготовленные запросы ускоряют вставку
--- настроено пул соединений к БД
--- graceful shutdown для корректного завершения
+# Click Counter Service
 
-// запуск
--- установить PostgreSQL и создать БД click_counter
--- выполнить SQL для создания таблиц
--- запустить сервис:
-go run main.go
-go run main.go -port 9090
+## How It Works
 
-// это решение обеспечивает производительность 500+ RPS за счет батчинга и асинхронной обработки, сохраняя при этом простоту и надежность.
+### Click Processing (`/counter`)
+- Uses a channel for asynchronous click processing
+- Clicks are batched and written to the database:
+  - Every 1 second, OR
+  - When reaching 100 clicks in a batch
+- Uses `ON CONFLICT` to increment counters for existing minute entries
 
-// SQL:
+### Statistics Retrieval (`/stats`)
+- Simple database query with time filtering
+- Uses indexes for fast search
+
+### Optimizations for Middle+ Level
+- Query batching reduces database load
+- Prepared statements speed up inserts
+- Configured database connection pool
+- Graceful shutdown for proper termination
+
+## Setup & Running
+
+1. Install PostgreSQL and create database `click_counter`
+2. Execute the following SQL to create tables:
+
+## SQL:
 DROP TABLE IF EXISTS banners;
 
 CREATE TABLE banners (
@@ -29,10 +32,8 @@ CREATE TABLE banners (
     name VARCHAR(255) NOT NULL
 );
 
--- Drop existing table if needed
 DROP TABLE IF EXISTS clicks;
 
--- Create new table with proper constraints
 CREATE TABLE clicks (
     banner_id INTEGER REFERENCES banners(id),
     timestamp TIMESTAMP WITH TIME ZONE DEFAULT date_trunc('minute', NOW()),
@@ -43,7 +44,7 @@ CREATE TABLE clicks (
 CREATE INDEX idx_clicks_banner_id ON clicks(banner_id);
 CREATE INDEX idx_clicks_timestamp ON clicks(timestamp);
 
---
+-- Sample data
 INSERT INTO banners (id, name) VALUES 
 (1, 'tom'),
 (2, 'bom'),
