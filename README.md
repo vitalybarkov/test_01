@@ -22,9 +22,10 @@
 ## Setup & Running
 
 1. Install PostgreSQL and create database `click_counter`
-2. Execute the following SQL to create tables:
+2. Execute the following SQL to create tables.
+3. Test out the service.
 
-## SQL:
+## SQL
 DROP TABLE IF EXISTS banners;
 
 CREATE TABLE banners (
@@ -52,7 +53,7 @@ INSERT INTO banners (id, name) VALUES
 (4, 'rom');
 
 
-## TEST:
+## TEST
 curl http://localhost:8080/counter/3
 
 curl -X POST http://localhost:8090/stats/3   -H "Content-Type: application/json"   -d '{"ts_from": "2023-01-01T00:00:00Z", "ts_to": "2025-12-31T23:59:59Z"}'
